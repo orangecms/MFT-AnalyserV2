@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"github.com/Mimoja/MFT-AnalyserV2"
 	"github.com/jedib0t/go-pretty/table"
@@ -29,8 +30,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not parse image: %v", err)
 	}
-	handleResult(analyse)
-
+	f, err := os.Create("./mft-analysis.json")
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", " ")
+	enc.Encode(analyse)
 }
 
 /**
