@@ -1,0 +1,141 @@
+#!/usr/bin/node
+
+fs = require('fs');
+path = require('path');
+
+const amdRoms = Roms => {
+  if (!Roms) {
+    return;
+  }
+  const entryInfos = [];
+  Roms.forEach(({ Type, Directories }) => {
+    console.info({ Type });
+    Directories.forEach(({ Header, Entries, Location }) => {
+      console.info(
+        { Header, Location, entries: Entries.length },
+      );
+      Entries.forEach(e => {
+        const {
+          DirectoryEntry,
+          Version,
+          Comment,
+          TypeInfo,
+          Header, // raw struct, sort of, lots of metadata
+          Signature, // base64 encoded
+          // Raw, // this is the big thing, base64 encoded ;)
+        } = e;
+        console.info({
+          DirectoryEntry,
+          Version,
+          Comment,
+          TypeInfo,
+        });
+        if (TypeInfo && TypeInfo.Name) {
+          entryInfos.push(TypeInfo);
+        }
+      });
+    });
+  });
+  console.info(entryInfos);
+};
+
+const amdFw = FW => {
+  const {
+    FET,
+    FlashMapping,
+    Roms,
+  } = FW;
+  const {
+    Location,
+    Signature,
+    ImcRomBase,
+    GecRomBase,
+    XHCRomBase,
+    PSPDirBase,
+    NewPSPDirBase,
+    BHDDirBase,
+    NewBHDDirBase,
+  } = FET;
+  const entries = Roms && Roms.map(({ Type, Directories }) => ({
+    type: Type,
+    directories: Directories.length,
+  }));
+  console.info('AMD FW:', {
+    FET,
+    FlashMapping,
+    ROMs: Roms && Roms.length,
+    ROMEntries: entries,
+  });
+  amdRoms(Roms);
+};
+
+const parseHex = x => {
+  const slice = x.substr(2,2);
+  const decimal = Number.parseInt(slice, 16);
+  return String.fromCharCode(decimal);
+};
+
+const parseEscapedHex = d => {
+  x = d.replace(/\\x[0-9,a-f]{2}/g, x => parseHex(x));
+  return x;
+};
+
+// './A3MSTX_3.60.MFT-Analyserv2.json'
+file = process.argv[2];
+
+if (file) {
+  try {
+    const filePath = path.resolve(file);
+    d = require(filePath);
+    const {
+      AMDAGESA,
+      AMDFirmware,
+      Certificates,
+      Copyrights,
+      ID,
+      INTEL,
+      IntelMicrocodes,
+      SPDs,
+    } = d;
+    if (AMDAGESA) {
+      console.info('AGESA entries:', AMDAGESA.length);
+      AMDAGESA.forEach(a => {
+        const {
+          Header,
+          Offset,
+          Raw, // the AGESA header, raw bytes, rather small
+        } = a;
+        // fs.writeFileSync('./agesa.bin', parseEscapedHex(Raw));
+        console.info({
+          Header,
+          Offset,
+        });
+      });
+    }
+    if (AMDFirmware) {
+      amdFw(AMDFirmware);
+    }
+    if (Certificates) {
+      console.info('Certificates:', Certificates.length);
+    }
+    if (ID) {
+      console.info({ ID });
+    }
+    if (INTEL) {
+      console.info({ INTEL });
+    }
+    if (IntelMicrocodes) {
+      console.info({ IntelMicrocodes });
+    }
+    if (SPDs) {
+      console.info('SDPs:', { SPDs });
+    }
+  } catch (e) {
+    console.error('Error: File not found.');
+    process.exit(-1);
+  }
+} else {
+  console.info(`No file given. Usage: mftjs [file]`);
+}
+
+process.exit(0);
