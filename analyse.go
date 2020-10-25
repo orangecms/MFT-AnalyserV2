@@ -12,10 +12,10 @@ import (
 	"github.com/Mimoja/intelfit"
 	"github.com/hillu/go-yara"
 	"github.com/linuxboot/fiano/pkg/uefi"
-	"github.com/mimoja/amdfw"
 	"github.com/mimoja/intelfsp"
 	"github.com/mimoja/intelmc"
 	spdutil "github.com/mimoja/spdlib"
+	"github.com/orangecms/amdfw"
 	zcrypto "github.com/zmap/zcrypto/x509"
 	"log"
 )
@@ -268,7 +268,6 @@ func Analyse(bs []byte) (Result, error) {
 
 	return result, nil
 }
-
 
 func AnalyseAMDFW(firmwareBytes []byte) (*amdfw.Image, error) {
 	image := amdfw.Image{}
