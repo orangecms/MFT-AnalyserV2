@@ -12,6 +12,7 @@ require (
 	github.com/mimoja/intelfsp v0.0.0-20200131082651-219faac6d96b
 	github.com/mimoja/intelmc v0.0.0-20200511122253-e5201993a3e3
 	github.com/mimoja/spdlib v0.0.0-20200519105920-a56b0639d29d
+	github.com/orangecms/amdfw v0.0.0-20210207230117-46072933133d
 	github.com/sirupsen/logrus v1.5.0 // indirect
 	github.com/ulikunitz/xz v0.5.7 // indirect
 	github.com/zmap/zcrypto v0.0.0-20200428201052-0b8e6e5fef4f
