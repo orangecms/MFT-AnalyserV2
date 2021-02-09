@@ -8,15 +8,18 @@ require (
 	github.com/hillu/go-yara v1.2.3-0.20200516124514-34935a7ce995
 	github.com/jedib0t/go-pretty v4.2.1+incompatible
 	github.com/linuxboot/fiano v5.0.0+incompatible
-	github.com/mimoja/amdfw v0.0.0-20191031111635-2218359ecbdc
+	github.com/mimoja/amdfw v0.0.0-20191031111635-2218359ecbdc // indirect
 	github.com/mimoja/intelfsp v0.0.0-20200131082651-219faac6d96b
 	github.com/mimoja/intelmc v0.0.0-20200511122253-e5201993a3e3
 	github.com/mimoja/spdlib v0.0.0-20200519105920-a56b0639d29d
-	github.com/orangecms/amdfw v0.0.0-20210207230117-46072933133d
+	github.com/orangecms/PSP-Entry-Types v1.0.0 // indirect
+	github.com/orangecms/amdfw v0.0.0-20210208010309-27278a9d03b8
 	github.com/sirupsen/logrus v1.5.0 // indirect
 	github.com/ulikunitz/xz v0.5.7 // indirect
 	github.com/zmap/zcrypto v0.0.0-20200428201052-0b8e6e5fef4f
 	golang.org/x/net v0.0.0-20190522155817-f3200d17e092
 )
 
-replace github.com/Mimoja/amdfw v0.0.0 => github.com/orangecms/amdfw v0.0.0-20201025142737-3383cba820a6
+replace github.com/Mimoja/amdfw => ../MFT/amdfw
+
+replace github.com/orangecms/amdfw => ../MFT/amdfw
