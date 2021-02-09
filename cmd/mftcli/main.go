@@ -28,7 +28,7 @@ func main() {
 
 	analyse, err := MFT_AnalyserV2.Analyse(bs)
 	if err != nil {
-		log.Fatalf("Could not parse image: %v", err)
+		log.Printf("Could not parse image: %v", err)
 	}
 	f, err := os.Create("./mft-analysis.json")
 	enc := json.NewEncoder(f)
